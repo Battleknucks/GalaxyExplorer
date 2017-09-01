@@ -1,4 +1,6 @@
-﻿Shader "GE_symbol_Logo"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "GE_symbol_Logo"
 {
     Properties
     {
@@ -42,7 +44,7 @@
                 v2f vert(appdata v)
                 {
                     v2f o;
-                    o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+                    o.vertex = UnityObjectToClipPos(v.vertex);
                     o.normal = mul((float3x3)unity_ObjectToWorld, v.normal);
 
                     float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
