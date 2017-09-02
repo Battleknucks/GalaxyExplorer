@@ -1317,6 +1317,12 @@ public class TransitionManager : Singleton<TransitionManager>
             }
         }
 
+        // Enable the cyber text typing - Dan W.
+        if(GenericCyberIncController.Instance != null)
+        {
+            GenericCyberIncController.Instance.Activate();
+        }
+
         ToolManager.Instance.ShowTools();
     }
 
