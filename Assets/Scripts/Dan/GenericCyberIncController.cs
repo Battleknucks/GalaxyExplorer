@@ -1,9 +1,11 @@
-﻿// Added by Dan W.
+﻿// GenericCyberIncController.cs
+// Written by Dan W.
+//
 
-using HoloToolkit.Unity;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using HoloToolkit.Unity;
+using System.Collections;
 
 public class GenericCyberIncController : Singleton<GenericCyberIncController>
 {
