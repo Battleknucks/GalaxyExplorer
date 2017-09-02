@@ -158,9 +158,14 @@ public class IntroductionFlow : Singleton<IntroductionFlow>
 
                 // Push us out of the intro state - Dan W.
                 TransitionManager.Instance.IsIntro = false;
+                if (timeInState > SecondsOnGalaxy)
+                {
+                    TransitionManager.Instance.ShowToolsAndCursor();
+                    Destroy(gameObject);
+                }
                 break;
 
-           // Since we removed all the intros the following cases are no longer necessary - Dan W.
+            // Since we removed all the intros the following cases are no longer necessary - Dan W.
 
             //case IntroductionState.IntroductionStateEarthHydrate:
             //    if (SkipPlaceEarth || (timeInState >= DialogExitTime))
@@ -237,7 +242,6 @@ public class IntroductionFlow : Singleton<IntroductionFlow>
             //    {
             //        AdvanceIntroduction();
             //    }
-
             //    break;
         }
 

@@ -1131,7 +1131,6 @@ GameObject:
   - component: {fileID: 1378412602}
   - component: {fileID: 1378412603}
   - component: {fileID: 1378412604}
-  - component: {fileID: 1378412605}
   - component: {fileID: 1378412606}
   m_Layer: 0
   m_Name: Content
@@ -1209,25 +1208,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FullScreenFillPercentage: 0.75
   TargetFillCollider: {fileID: 440685059}
---- !u!114 &1378412605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1378412599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 026164aa46a857646989697f9e6aa849, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IntroMusicEvent: 
-  MusicEvent: 04_PlanetaryView
-  MusicDelayInSeconds: 1
-  VoiceOver:
-    clip: {fileID: 8300000, guid: 20e852c1b01bfad48a26614841152d7e, type: 3}
-    delay: 0.5
-    allowReplay: 0
-  IntroSFX: {fileID: 0}
 --- !u!114 &1378412606
 MonoBehaviour:
   m_ObjectHideFlags: 0
