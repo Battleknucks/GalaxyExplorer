@@ -113,9 +113,15 @@ public class ViewLoader : Singleton<ViewLoader>
             yield return null;
         }
 
+        // This code doesn't actually wait 1 frame, the comment is incorrect.
+        // This waits until Unity has finished with all update loops, however many things occur after update prior to the frame completing... - Dan W.
+
         // wait a frame after the solar system is done preloading, so other calls can respond to the transition being complete
         // (i.e.: IntroductionState.IntroductionStatePreloadSolarSystem waits to play VO after the preload)
-        yield return null;
+        // yield return null;
+
+        // This will wait 1 full frame
+        yield return new WaitForEndOfFrame();
 
         Debug.Log("Loading Starting View...");
         TransitionManager.Instance.LoadNextScene(StartingView, null);

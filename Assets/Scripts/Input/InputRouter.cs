@@ -107,7 +107,10 @@ public class InputRouter : Singleton<InputRouter>
             KeyboardInput.Instance.RegisterKeyEvent(new KeyboardInput.KeyCodeEventPair(KeyCode.Space, KeyboardInput.KeyEvent.KeyReleased), FakeTapKeyboardHandler);
             KeyboardInput.Instance.RegisterKeyEvent(new KeyboardInput.KeyCodeEventPair(KeyCode.Backspace, KeyboardInput.KeyEvent.KeyReleased), FakeBackKeyboardHandler);
         }
-        
+
+        // This is a bug that should be reported to Microsoft, the input recognizer for gestures locks up the editor (and the PC standalone build) when it is initialized, the code that locks up
+        // is somewhere in the DLL. - Dan W.
+#if !UNITY_EDITOR
         gestureRecognizer = new GestureRecognizer();
         gestureRecognizer.SetRecognizableGestures(GestureSettings.Hold | GestureSettings.Tap |
                                                   GestureSettings.NavigationY | GestureSettings.NavigationX);
@@ -115,6 +118,7 @@ public class InputRouter : Singleton<InputRouter>
         gestureRecognizer.StartCapturingGestures();
 
         TryToRegisterEvents();
+#endif
     }
 
     private void FakeTapKeyboardHandler(KeyboardInput.KeyCodeEventPair keyCodeEvent)

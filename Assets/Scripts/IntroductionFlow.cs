@@ -120,11 +120,15 @@ public class IntroductionFlow : Singleton<IntroductionFlow>
             case IntroductionState.IntroductionStateAppDescription:
             case IntroductionState.IntroductionStateDevelopers:
             case IntroductionState.IntroductionStateCommunity:
-                if (timeInState >= IntroSlateTime)
-                {
-                    AdvanceIntroduction();
-                }
+                // We are skipping the intro states - Dan W.
 
+                //if (timeInState >= IntroSlateTime)
+                //{
+                //    AdvanceIntroduction();
+                //}
+
+                // We now immediately advance to the logo - Dan W.
+                AdvanceIntroduction();
                 break;
                 
             case IntroductionState.IntroductionStateLogo:
@@ -145,90 +149,96 @@ public class IntroductionFlow : Singleton<IntroductionFlow>
                 break;
 
             case IntroductionState.IntroductionStatePreloadSolarSystem:
-                if (TransitionManager.Instance.InTransition == false)
-                {
-                    AdvanceIntroduction();
-                }
+                // Skip intros - Dan W.
 
+                //if (TransitionManager.Instance.InTransition == false)
+                //{
+                //    AdvanceIntroduction();
+                //}
+
+                // Push us out of the intro state - Dan W.
+                TransitionManager.Instance.IsIntro = false;
                 break;
 
-            case IntroductionState.IntroductionStateEarthHydrate:
-                if (SkipPlaceEarth || (timeInState >= DialogExitTime))
-                {
-                    AdvanceIntroduction();
-                }
+           // Since we removed all the intros the following cases are no longer necessary - Dan W.
 
-                break;
+            //case IntroductionState.IntroductionStateEarthHydrate:
+            //    if (SkipPlaceEarth || (timeInState >= DialogExitTime))
+            //    {
+            //        AdvanceIntroduction();
+            //    }
 
-            case IntroductionState.IntroductionStatePlaceEarth:
-                if (introEarth == null)
-                {
-                    GameObject currentContent = ViewLoader.Instance.GetCurrentContent();
+            //    break;
 
-                    if (currentContent)
-                    {
-                        introEarth = currentContent.GetComponent<IntroEarth>();
+            //case IntroductionState.IntroductionStatePlaceEarth:
+            //    if (introEarth == null)
+            //    {
+            //        GameObject currentContent = ViewLoader.Instance.GetCurrentContent();
 
-                        if (introEarth)
-                        {
-                            introEarth.SetIntroMode(true);
-                            PlayOneShot(EarthPlacement);
-                        }
-                    }
-                }
-                else
-                {
-                    if (SkipPlaceEarth && TransitionManager.Instance.InTransition == false)
-                    {
-                        placementControl.TogglePinnedState();
-                    }
-                }
+            //        if (currentContent)
+            //        {
+            //            introEarth = currentContent.GetComponent<IntroEarth>();
 
-                break;
+            //            if (introEarth)
+            //            {
+            //                introEarth.SetIntroMode(true);
+            //                PlayOneShot(EarthPlacement);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (SkipPlaceEarth && TransitionManager.Instance.InTransition == false)
+            //        {
+            //            placementControl.TogglePinnedState();
+            //        }
+            //    }
 
-            case IntroductionState.IntroductionStateEarthFadeout:
-                if (timeInState > SecondsToFadeOutEarth)
-                {
-                    if (!SkipPlaceEarth)
-                    {
-                        // If we placed the Earth, play the VO "Great!" to
-                        // give feedback to the user that they did something
-                        // important.
-                        VOManager.Instance.PlayClip(EarthCentered);
-                    }
-                    VOManager.Instance.PlayClip(Earth);
-                    AdvanceIntroduction();
-                }
+            //    break;
 
-                break;
+            //case IntroductionState.IntroductionStateEarthFadeout:
+            //    if (timeInState > SecondsToFadeOutEarth)
+            //    {
+            //        if (!SkipPlaceEarth)
+            //        {
+            //            // If we placed the Earth, play the VO "Great!" to
+            //            // give feedback to the user that they did something
+            //            // important.
+            //            VOManager.Instance.PlayClip(EarthCentered);
+            //        }
+            //        VOManager.Instance.PlayClip(Earth);
+            //        AdvanceIntroduction();
+            //    }
 
-            case IntroductionState.IntroductionEarth:
-                if (timeInState > SecondsOnEarth)
-                {
-                    VOManager.Instance.PlayClip(SolarSystem);
-                    TransitionManager.Instance.LoadPrevScene("SolarSystemView");
-                    AdvanceIntroduction();
-                }
+            //    break;
 
-                break;
+            //case IntroductionState.IntroductionEarth:
+            //    if (timeInState > SecondsOnEarth)
+            //    {
+            //        VOManager.Instance.PlayClip(SolarSystem);
+            //        TransitionManager.Instance.LoadPrevScene("SolarSystemView");
+            //        AdvanceIntroduction();
+            //    }
 
-            case IntroductionState.IntroductionSolarSystem:
-                if (timeInState > SecondsOnSolarSystem)
-                {
-                    TransitionManager.Instance.IsIntro = false;
-                    TransitionManager.Instance.LoadPrevScene("GalaxyView");
-                    AdvanceIntroduction();
-                }
+            //    break;
 
-                break;
+            //case IntroductionState.IntroductionSolarSystem:
+            //    if (timeInState > SecondsOnSolarSystem)
+            //    {
+            //        TransitionManager.Instance.IsIntro = false;
+            //        TransitionManager.Instance.LoadPrevScene("GalaxyView");
+            //        AdvanceIntroduction();
+            //    }
 
-            case IntroductionState.IntroductionGalaxy:
-                if (timeInState > SecondsOnGalaxy)
-                {
-                    AdvanceIntroduction();
-                }
+            //    break;
 
-                break;
+            //case IntroductionState.IntroductionGalaxy:
+            //    if (timeInState > SecondsOnGalaxy)
+            //    {
+            //        AdvanceIntroduction();
+            //    }
+
+            //    break;
         }
 
         timeInState += Time.deltaTime;
@@ -243,13 +253,16 @@ public class IntroductionFlow : Singleton<IntroductionFlow>
         placementControl = TransitionManager.Instance.ViewVolume.GetComponentInChildren<PlacementControl>();
 
         MusicManager.Instance.FindSnapshotAndTransition(MusicManager.Instance.Welcome);
-        VOManager.Instance.Stop(clearQueue: true);
-        VOManager.Instance.PlayClip(Title);
-        VOManager.Instance.PlayClip(Description);
-        VOManager.Instance.PlayClip(Goal);
-        VOManager.Instance.PlayClip(Invitation);
 
-        UpdateInstructions();
+        // Removing intros - Dan W.
+
+        //VOManager.Instance.Stop(clearQueue: true);
+        //VOManager.Instance.PlayClip(Title);
+        //VOManager.Instance.PlayClip(Description);
+        //VOManager.Instance.PlayClip(Goal);
+        //VOManager.Instance.PlayClip(Invitation);
+
+        //UpdateInstructions();
     }
 
     private void OnTapped(InteractionSourceKind source, int tapCount, Ray headRay)
@@ -316,15 +329,20 @@ public class IntroductionFlow : Singleton<IntroductionFlow>
                     ViewLoader.Instance.transform.position = Camera.main.transform.position + (Camera.main.transform.forward * 2.0f);
                     ViewLoader.Instance.transform.rotation = Quaternion.LookRotation(Camera.main.transform.position - ViewLoader.Instance.transform.position);
                     StartCoroutine(ViewLoader.Instance.LoadStartingView());
-                    TransitionManager.Instance.ContentLoaded += ContentLoaded;
-                    placementControl.ContentPlaced += ContentPlaced;
+
+                    // We are skipping the intros and this is no longer needed - Dan W.
+
+                    //TransitionManager.Instance.ContentLoaded += ContentLoaded;
+                    //placementControl.ContentPlaced += ContentPlaced;
                     break;
 
                 case IntroductionState.IntroductionStatePreloadSolarSystem:
-                    if (!SkipPlaceEarth)
-                    {
-                        VOManager.Instance.PlayClip(CenterEarth);
-                    }
+                    // Skip intro Voice Over - Dan W.
+
+                    //if (!SkipPlaceEarth)
+                    //{
+                    //    VOManager.Instance.PlayClip(CenterEarth);
+                    //}
                     break;
             }
 
@@ -336,64 +354,67 @@ public class IntroductionFlow : Singleton<IntroductionFlow>
                 return;
             }
 
-            UpdateInstructions();
+            // Skip intros - Dan W.
+            //UpdateInstructions();
             timeInState = 0.0f;
         }
     }
 
-    private void ContentLoaded()
-    {
-        TransitionManager.Instance.ContentLoaded -= ContentLoaded;
-        introEarth.TurnOnIntroEarth();
-        placementControl.TogglePinnedState();
-    }
+    // Skipping intros, the following code is no longer used - Dan W.
 
-    private void ContentPlaced()
-    {
-        PlayOneShot(EarthHydrate);
-        placementControl.ContentPlaced -= ContentPlaced;
+    //private void ContentLoaded()
+    //{
+    //    TransitionManager.Instance.ContentLoaded -= ContentLoaded;
+    //    introEarth.TurnOnIntroEarth();
+    //    placementControl.TogglePinnedState();
+    //}
 
-        if (introEarth)
-        {
-            introEarth.TransitionFromIntroToReal();
-        }
+    //private void ContentPlaced()
+    //{
+    //    PlayOneShot(EarthHydrate);
+    //    placementControl.ContentPlaced -= ContentPlaced;
 
-        AdvanceIntroduction();
-    }
+    //    if (introEarth)
+    //    {
+    //        introEarth.TransitionFromIntroToReal();
+    //    }
 
-    private void UpdateInstructions()
-    {
-        switch (currentState)
-        {
-            case IntroductionState.IntroductionStateAppDescription:
-                InstructionSlate.gameObject.SetActive(true);
+    //    AdvanceIntroduction();
+    //}
 
-                // position the slate in front of the user
-                Tagalong tagalong = InstructionSlate.gameObject.GetComponent<Tagalong>();
-                float distance = 2.0f;
+    //private void UpdateInstructions()
+    //{
+    //    switch (currentState)
+    //    {
+    //        case IntroductionState.IntroductionStateAppDescription:
+    //            InstructionSlate.gameObject.SetActive(true);
 
-                if (tagalong != null)
-                {
-                    distance = tagalong.TagalongDistance;
-                }
+    //            // position the slate in front of the user
+    //            Tagalong tagalong = InstructionSlate.gameObject.GetComponent<Tagalong>();
+    //            float distance = 2.0f;
 
-                InstructionSlate.gameObject.transform.position = Camera.main.transform.position + (Camera.main.transform.forward * distance);
-                InstructionSlate.DisplayMessage(InstructionSlate.InstructionText.AppDescription);
-                break;
+    //            if (tagalong != null)
+    //            {
+    //                distance = tagalong.TagalongDistance;
+    //            }
 
-            case IntroductionState.IntroductionStateDevelopers:
-                InstructionSlate.DisplayMessage(InstructionSlate.InstructionText.Developers);
-                break;
+    //            InstructionSlate.gameObject.transform.position = Camera.main.transform.position + (Camera.main.transform.forward * distance);
+    //            InstructionSlate.DisplayMessage(InstructionSlate.InstructionText.AppDescription);
+    //            break;
 
-            case IntroductionState.IntroductionStateCommunity:
-                InstructionSlate.DisplayMessage(InstructionSlate.InstructionText.Community);
-                break;
+    //        case IntroductionState.IntroductionStateDevelopers:
+    //            InstructionSlate.DisplayMessage(InstructionSlate.InstructionText.Developers);
+    //            break;
 
-            case IntroductionState.IntroductionStateSlateFadeout:
-                InstructionSlate.Hide();
-                break;
-        }
-    }
+    //        case IntroductionState.IntroductionStateCommunity:
+    //            InstructionSlate.DisplayMessage(InstructionSlate.InstructionText.Community);
+    //            break;
+
+    //        case IntroductionState.IntroductionStateSlateFadeout:
+    //            InstructionSlate.Hide();
+    //            break;
+    //    }
+    //}
 
     private void PlayOneShot(AudioClip clip)
     {
