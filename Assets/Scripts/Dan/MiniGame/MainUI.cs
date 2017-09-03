@@ -90,6 +90,11 @@ public class MainUI : Singleton<MainUI>
         }
     }
 
+    public void Error (string message)
+    {
+        StartCoroutine(DisplayMessage(message));
+    }
+
     public void DoIntro ()
     {
         StartCoroutine(DisplayMessage("There is a cyber attack in progress in the Sol System..."));

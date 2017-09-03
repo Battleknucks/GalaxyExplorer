@@ -24,6 +24,7 @@ public class MapController : MonoBehaviour
         if (DataDownloader.Instance.MapImages == null || DataDownloader.Instance.MapImages.Count < 2)
         {
             Debug.LogError("Failed to download map data...");
+            MainUI.Instance.Error("Failed to download map data...");
             yield return null;
         }
 
