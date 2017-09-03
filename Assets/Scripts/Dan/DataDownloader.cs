@@ -19,7 +19,7 @@ public class DataDownloader : Singleton<DataDownloader>
 
     private string apiKey = "AIzaSyCC6UQRiQPCpUOIWh70ExSM36v60fjWCWM";
     private string apiUrl = "https://maps.googleapis.com/maps/api/staticmap?center=";
-    private string location = "9665 Chesapeake Drive Suite 401 San Diego, CA 92123";
+    private string location = "9665+Chesapeake+Drive+Suite+401+San+Diego,+CA+92123";
     private List<Texture> _mapImages;
 
     private void Awake()
