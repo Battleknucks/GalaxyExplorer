@@ -73,6 +73,15 @@ public class GameBoard : Singleton<GameBoard>
         }
 
         _piecesOnBoard.Clear();
+        _thisAudioSource.Stop();
+    }
+
+    public void HackCompleted ()
+    {
+        if(_piecesOnBoard.Count > 0)
+        {
+            LooseGame();
+        }
     }
 
     private IEnumerator CheckForMatchRoutine ()
@@ -102,7 +111,25 @@ public class GameBoard : Singleton<GameBoard>
         }
 
         _revealedPieces.Clear();
+
+        if(_piecesOnBoard.Count < 1)
+        {
+            WinGame();
+        }
+
         _runningMatch = false;
+    }
+
+    private void WinGame ()
+    {
+        MainUI.Instance.Win();
+        CleanupGame();
+    }
+
+    private void LooseGame ()
+    {
+        MainUI.Instance.Loose();
+        CleanupGame();
     }
 
     #endregion

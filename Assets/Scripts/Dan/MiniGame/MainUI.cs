@@ -171,6 +171,22 @@ public class MainUI : Singleton<MainUI>
         StartCoroutine("HackBar");
     }
 
+    public void Win ()
+    {
+        StopAllCoroutines();
+        _progressBarBackdrop.enabled = false;
+        _progressBarFill.enabled = false;
+        StartCoroutine("DisplayMessage", new _messageData("Congradulations, you successfully stopped the hacker."));
+    }
+
+    public void Loose ()
+    {
+        StopAllCoroutines();
+        _progressBarBackdrop.enabled = false;
+        _progressBarFill.enabled = false;
+        StartCoroutine("DisplayMessage", new _messageData("The hacker successfully breached the system. You have failed.."));
+    }
+
     private IEnumerator HackRoutine()
     {
         while (_isHacking)
@@ -191,6 +207,8 @@ public class MainUI : Singleton<MainUI>
             _progressBarFill.fillAmount += Time.unscaledDeltaTime / _hackDuration;
             yield return null;
         }
+
+        GameBoard.Instance.HackCompleted();
     }
 
     private IEnumerator DisplayMessage(_messageData data)
