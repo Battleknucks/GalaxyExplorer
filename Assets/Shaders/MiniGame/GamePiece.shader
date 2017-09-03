@@ -18,8 +18,10 @@ Shader "Dan W./GamePiece"
 			"Queue" = "Transparent"
 		}
 
+		Cull Back
 		Blend SrcAlpha OneMinusSrcAlpha
-
+		ZWrite Off
+		
 		Pass
 		{
 			CGPROGRAM
