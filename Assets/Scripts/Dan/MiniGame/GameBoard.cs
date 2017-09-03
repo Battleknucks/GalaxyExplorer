@@ -15,6 +15,10 @@ public class GameBoard : Singleton<GameBoard>
     [SerializeField]
     private Transform _boardHolder;
 
+    [SerializeField]
+    private AudioClip _music;
+
+    private AudioSource _thisAudioSource;
     private Transform _thisTransform;
     private List<GamePiece> _piecePool;
     private List<GamePiece> _piecesOnBoard;
@@ -27,6 +31,7 @@ public class GameBoard : Singleton<GameBoard>
     private void Awake()
     {
         _thisTransform = GetComponent<Transform>();
+        _thisAudioSource = GetComponent<AudioSource>();
         _runningMatch = false;
         SetupPool();
     }
@@ -42,6 +47,9 @@ public class GameBoard : Singleton<GameBoard>
     {
         yield return StartCoroutine(SetupBoard());
         yield return StartCoroutine(RevealAllPieces());
+        MusicManager.Instance.KillBackgroundMusic();
+        _thisAudioSource.clip = _music;
+        _thisAudioSource.Play();
     }
 
     private IEnumerator CheckForMatchRoutine ()

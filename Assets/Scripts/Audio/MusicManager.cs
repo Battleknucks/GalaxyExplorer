@@ -7,6 +7,7 @@ using UnityEngine.Audio;
 public class MusicManager : Singleton<MusicManager>
 {
     public AudioMixer mixer;
+    public AudioSource[] BackgroundAudioSources;
 
     public string Welcome = "01_Welcome";
     public string Galaxy = "02_Galaxy";
@@ -35,5 +36,13 @@ public class MusicManager : Singleton<MusicManager>
         }
 
         return transitioned;
+    }
+
+    public void KillBackgroundMusic ()
+    {
+        for(int i = 0; i < BackgroundAudioSources.Length; ++i)
+        {
+            BackgroundAudioSources[i].Stop();
+        }
     }
 }
