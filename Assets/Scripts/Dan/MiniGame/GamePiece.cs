@@ -3,13 +3,14 @@
 //
 
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.VR.WSA.Input;
 using System.Collections;
 
 public class GamePiece : GazeSelectionTarget
 {
     [SerializeField]
-    private SpriteRenderer _hiddenPiece;
+    private Image _hiddenPiece;
 
     public bool InUse
     {
@@ -53,7 +54,10 @@ public class GamePiece : GazeSelectionTarget
     private void Awake()
     {
         _thisTransform = GetComponent<Transform>();
-        _thisMaterial = GetComponentInChildren<Renderer>().material;
+        RawImage ri = GetComponent<RawImage>();
+        _thisMaterial = new Material(Shader.Find("Dan W./GamePiece"));
+        _thisMaterial.CopyPropertiesFromMaterial(ri.material);
+        ri.material = _thisMaterial;
         _selected = false;
         _inGaze = false;
         _isAnimating = false;

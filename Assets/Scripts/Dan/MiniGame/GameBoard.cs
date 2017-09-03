@@ -139,11 +139,13 @@ public class GameBoard : Singleton<GameBoard>
         Shuffle<int>(nums);
 
         yield return new WaitForSeconds(1);
+        Vector2 startingPosition = new Vector2(((boardWidth * 128) / 2) * -1, ((boardHeight * 128) / 2) * -1);
 
         for(int x = 0; x < boardWidth; ++x)
         {
             for(int y = 0; y < boardHeight; ++y)
             {
+                Vector3 position = new Vector3(startingPosition.x + (x * 128), startingPosition.y + (y * 128), 0);
                 GamePiece piece = GetPieceFromPool();
                 piece.CachedTransform.SetParent(_boardHolder);
                 piece.CachedTransform.localEulerAngles = new Vector3(45, 0, 0);
@@ -151,7 +153,7 @@ public class GameBoard : Singleton<GameBoard>
                 piece.SetID(nums[counter]);
                 ++counter;
                 _piecesOnBoard.Add(piece);
-                piece.Activate(new Vector3(x, y, 0));
+                piece.Activate(position);
                 yield return new WaitForSeconds(0.2F);
             }
         }

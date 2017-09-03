@@ -1,10 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// MapController.cs
+// Written by Dan W.
+//
+
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class MapController : MonoBehaviour
 {
-    private Renderer _thisRenderer;
+    private RectTransform _thisTransform;
+    private RawImage _thisRawImage;
 
     private string apiKey = "AIzaSyCC6UQRiQPCpUOIWh70ExSM36v60fjWCWM";
     private string apiUrl = "https://maps.googleapis.com/maps/api/staticmap?center=";
@@ -14,7 +20,8 @@ public class MapController : MonoBehaviour
 
     private void Awake()
     {
-        _thisRenderer = GetComponent<Renderer>();
+        _thisTransform = GetComponent<RectTransform>();
+        _thisRawImage = GetComponent<RawImage>();
         _mapImages = new List<Texture>();
     }
 
@@ -38,19 +45,20 @@ public class MapController : MonoBehaviour
         }
 
         yield return new WaitForEndOfFrame();
-        _thisRenderer.material.SetTexture("_Texture1", _mapImages[0]);
+        _thisRawImage.material.SetTexture("_Texture1", _mapImages[0]);
         yield return new WaitForSeconds(0.5F);
+        float timer = 0.0F;
 
         for (int i = 1; i < _mapImages.Count; ++i)
         {
-            _thisRenderer.material.SetTexture("_Texture1", _mapImages[i - 1]);
-            _thisRenderer.material.SetTexture("_Texture2", _mapImages[i]);
-            float timer = 0.0F;
+            _thisRawImage.material.SetTexture("_Texture1", _mapImages[i - 1]);
+            _thisRawImage.material.SetTexture("_Texture2", _mapImages[i]);
+            timer = 0.0F;
 
             while (timer < 1.0F)
             {
                 timer += Time.unscaledDeltaTime / 0.5F;
-                _thisRenderer.material.SetFloat("_Fade", timer);
+                _thisRawImage.material.SetFloat("_Fade", timer);
                 yield return null;
             }
 
@@ -59,7 +67,19 @@ public class MapController : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
-        if(GameBoard.Instance != null)
+        timer = 0.0F;
+
+        while(timer < 1.0F)
+        {
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+            _thisTransform.anchoredPosition = Vector2.Lerp(_thisTransform.anchoredPosition, new Vector2(384, 320), timer);
+            _thisTransform.sizeDelta = Vector2.Lerp(_thisTransform.sizeDelta, new Vector2(128, 128), timer);
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        if (GameBoard.Instance != null)
         {
             GameBoard.Instance.Init();
         }

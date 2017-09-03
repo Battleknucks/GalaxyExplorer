@@ -5,9 +5,17 @@ using UnityEngine.UI;
 public class MainUI : MonoBehaviour
 {
     [SerializeField]
+    private Canvas _canvas;
+
+    [SerializeField]
     private Image _progressBarFill;
 
-	void Update ()
+    private void Awake()
+    {
+        _canvas.worldCamera = Camera.main;
+    }
+
+    void Update ()
     {
         if (_progressBarFill.fillAmount < 1.0F)
         {
