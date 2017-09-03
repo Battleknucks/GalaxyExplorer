@@ -161,6 +161,7 @@ public class IntroductionFlow : Singleton<IntroductionFlow>
                 if (timeInState > SecondsOnGalaxy)
                 {
                     TransitionManager.Instance.ShowToolsAndCursor();
+                    MainUI.Instance.DoIntro();
                     Destroy(gameObject);
                 }
                 break;

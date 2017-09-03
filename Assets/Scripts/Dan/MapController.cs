@@ -29,8 +29,12 @@ public class MapController : MonoBehaviour
 
         else
         {
+            yield return new WaitForSeconds(1);
+            MusicManager.Instance.KillBackgroundMusic();
+            MainUI.Instance.StartLocating();
+            GameBoard.Instance.StartAudio();
             _thisRawImage.material.SetTexture("_Texture1", DataDownloader.Instance.MapImages[0]);
-            yield return new WaitForSeconds(0.05F);
+            yield return new WaitForSeconds(0.5F);
             float timer = 0.0F;
 
             for (int i = 1; i < DataDownloader.Instance.MapImages.Count; ++i)
@@ -41,16 +45,14 @@ public class MapController : MonoBehaviour
 
                 while (timer < 1.0F)
                 {
-                    timer += Time.unscaledDeltaTime / 0.05F;
+                    timer += Time.unscaledDeltaTime / 0.5F;
                     _thisRawImage.material.SetFloat("_Fade", timer);
                     yield return null;
                 }
-
-                yield return new WaitForSeconds(1);
             }
 
-            yield return new WaitForEndOfFrame();
-
+            yield return new WaitForSeconds(1);
+            MainUI.Instance.StartInstructions();
             timer = 0.0F;
 
             while (timer < 1.0F)

@@ -13,19 +13,22 @@ public class GameBoard : Singleton<GameBoard>
     private GameObject _gamePiecePrefab;
 
     [SerializeField]
-    private Transform _boardHolder;
+    private Transform _uiHolder;
 
     [SerializeField]
     private AudioClip _music;
 
     private AudioSource _thisAudioSource;
     private Transform _thisTransform;
+    private Transform _boardHolder;
     private List<GamePiece> _piecePool;
     private List<GamePiece> _piecesOnBoard;
     private List<GamePiece> _revealedPieces;
     private bool _runningMatch;
     private List<Vector2> _boards = new List<Vector2>() { new Vector2(3, 4), new Vector2(4, 3), new Vector2(4, 4), new Vector2(4, 5), new Vector2(5, 4) };
-   
+    private List<float> _boardDurations = new List<float>() { 60.0F, 60.0F, 70.0F, 75.0F, 75.0F};
+    private float _currentBoardDuration;
+
     private static System.Random _rng = new System.Random();
 
     private void Awake()
@@ -34,22 +37,30 @@ public class GameBoard : Singleton<GameBoard>
         _thisAudioSource = GetComponent<AudioSource>();
         _runningMatch = false;
         SetupPool();
+        MainUI.Instance.CanvasTransform.SetParent(_uiHolder);
+        MainUI.Instance.SetupCanvas();
     }
 
     #region Game
 
     public void Init()
     {
+        _boardHolder = GameObject.Find("BoardHolder").transform;
         StartCoroutine(BeginGame());
+    }
+
+    public void StartAudio ()
+    {
+        _thisAudioSource.clip = _music;
+        _thisAudioSource.loop = true;
+        _thisAudioSource.Play();
     }
 
     public IEnumerator BeginGame()
     {
-        MusicManager.Instance.KillBackgroundMusic();
-        _thisAudioSource.clip = _music;
-        _thisAudioSource.Play();
         yield return StartCoroutine(SetupBoard());
         yield return StartCoroutine(RevealAllPieces());
+        MainUI.Instance.StartHacking(_currentBoardDuration);
     }
 
     private IEnumerator CheckForMatchRoutine ()
@@ -131,9 +142,11 @@ public class GameBoard : Singleton<GameBoard>
     {
         _piecesOnBoard = new List<GamePiece>();
         _revealedPieces = new List<GamePiece>();
-        Vector2 rand = _boards[Random.Range(0, _boards.Count)];
-        int boardWidth = (int)rand.x;
-        int boardHeight = (int)rand.y;
+        int rand = Random.Range(0, _boards.Count);
+        Vector2 randVec = _boards[rand];
+        _currentBoardDuration = _boardDurations[rand];
+        int boardWidth = (int)randVec.x;
+        int boardHeight = (int)randVec.y;
         int totalPairs = (boardWidth * boardHeight) / 2;
         List<int> nums = new List<int>();
         int counter = 0;

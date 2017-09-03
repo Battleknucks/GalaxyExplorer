@@ -13,7 +13,7 @@ public class GenericCyberIncController : Singleton<GenericCyberIncController>
     private Text _text;
 
     private Canvas _canvas;
-    private string _textStr = "Generic Cyber Security Inc.";
+    private string _textStr = "San Diego, California - USA";
     private float _revealIncriment = 3.0F;
     private bool _revealing;
 
