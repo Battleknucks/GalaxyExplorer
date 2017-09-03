@@ -45,11 +45,11 @@ public class GameBoard : Singleton<GameBoard>
 
     public IEnumerator BeginGame()
     {
-        yield return StartCoroutine(SetupBoard());
-        yield return StartCoroutine(RevealAllPieces());
         MusicManager.Instance.KillBackgroundMusic();
         _thisAudioSource.clip = _music;
         _thisAudioSource.Play();
+        yield return StartCoroutine(SetupBoard());
+        yield return StartCoroutine(RevealAllPieces());
     }
 
     private IEnumerator CheckForMatchRoutine ()
