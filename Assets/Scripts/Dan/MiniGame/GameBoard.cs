@@ -31,13 +31,12 @@ public class GameBoard : Singleton<GameBoard>
         SetupPool();
     }
 
-    private IEnumerator Start()
-    {
-        yield return new WaitForSeconds(1);
-        yield return StartCoroutine(BeginGame());
-    }
-
     #region Game
+
+    public void Init()
+    {
+        StartCoroutine(BeginGame());
+    }
 
     public IEnumerator BeginGame()
     {
