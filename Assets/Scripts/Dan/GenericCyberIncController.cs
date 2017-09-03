@@ -34,6 +34,7 @@ public class GenericCyberIncController : Singleton<GenericCyberIncController>
         }
     }
 
+    // Type out the text on the POI floating over earth
     private IEnumerator TextReveal ()
     {
         _revealing = true;

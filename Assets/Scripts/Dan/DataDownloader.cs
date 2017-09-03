@@ -26,7 +26,8 @@ public class DataDownloader : Singleton<DataDownloader>
     {
         _mapImages = new List<Texture>();
     }
-
+    
+    // Pre download all neccessary google map images
     private IEnumerator Start()
     {
         for (int i = 1; i < 18; ++i)

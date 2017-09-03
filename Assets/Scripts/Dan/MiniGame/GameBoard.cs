@@ -45,12 +45,14 @@ public class GameBoard : Singleton<GameBoard>
 
     #region Game
 
+    // We are loaded into the mini game scene, and are ready to begin a game
     public void Init()
     {
         _boardHolder = GameObject.Find("BoardHolder").transform;
         StartCoroutine(BeginGame());
     }
 
+    // Start playing the music
     public void StartAudio ()
     {
         _thisAudioSource.clip = _music;
@@ -58,6 +60,7 @@ public class GameBoard : Singleton<GameBoard>
         _thisAudioSource.Play();
     }
 
+    // Start a new game
     public IEnumerator BeginGame()
     {
         yield return StartCoroutine(SetupBoard());
@@ -65,6 +68,7 @@ public class GameBoard : Singleton<GameBoard>
         MainUI.Instance.StartHacking(_currentBoardDuration);
     }
 
+    // Cleanup the board and it's pieces
     public void CleanupGame()
     {
         for(int i = 0; i < _piecesOnBoard.Count; ++i)
@@ -76,6 +80,7 @@ public class GameBoard : Singleton<GameBoard>
         _thisAudioSource.Stop();
     }
 
+    // The timer has run out
     public void HackCompleted ()
     {
         if(_piecesOnBoard.Count > 0)
@@ -84,6 +89,7 @@ public class GameBoard : Singleton<GameBoard>
         }
     }
 
+    // Check if the pieces the user has selected make a match
     private IEnumerator CheckForMatchRoutine ()
     {
         _runningMatch = true;
@@ -92,6 +98,7 @@ public class GameBoard : Singleton<GameBoard>
        
         match = _revealedPieces[0].ID == _revealedPieces[1].ID;
 
+        // No match, put the pieces back down on the board
         if (!match)
         {
             while (_revealedPieces.Count > 0)
@@ -100,18 +107,18 @@ public class GameBoard : Singleton<GameBoard>
             }
         }
 
+        // Match, remove pieces from the board
         if (match)
         {
             while (_revealedPieces.Count > 0)
             {
                 yield return StartCoroutine(_revealedPieces[0].CollectPiece());
             }
-
-            yield return new WaitForSeconds(1);
         }
 
         _revealedPieces.Clear();
 
+        // There are no more pieces on the board
         if(_piecesOnBoard.Count < 1)
         {
             WinGame();
@@ -120,12 +127,14 @@ public class GameBoard : Singleton<GameBoard>
         _runningMatch = false;
     }
 
+    // User has won
     private void WinGame ()
     {
         MainUI.Instance.Win();
         CleanupGame();
     }
 
+    // User has lost
     private void LooseGame ()
     {
         MainUI.Instance.Loose();
@@ -136,6 +145,7 @@ public class GameBoard : Singleton<GameBoard>
 
     #region Board
 
+    // Show the piece to the user
     public void RevealPiece (GamePiece pieceToReveal)
     {
         if(_revealedPieces.Contains(pieceToReveal) || _runningMatch)
@@ -152,6 +162,7 @@ public class GameBoard : Singleton<GameBoard>
         }
     }
 
+    // Resets the piece to default and returns it to the pool
     public void ResetPiece (GamePiece pieceToRemove, bool recycle = false)
     {
         _revealedPieces.Remove(pieceToRemove);
@@ -167,6 +178,7 @@ public class GameBoard : Singleton<GameBoard>
         }
     }
 
+    // Show the user all the pieces at the begining of the game
     private IEnumerator RevealAllPieces ()
     {
         for(int i = 0; i < _piecesOnBoard.Count; ++i)
@@ -182,6 +194,7 @@ public class GameBoard : Singleton<GameBoard>
         }
     }
 
+    // Setup the game board
     private IEnumerator SetupBoard ()
     {
         _piecesOnBoard = new List<GamePiece>();
@@ -195,6 +208,8 @@ public class GameBoard : Singleton<GameBoard>
         List<int> nums = new List<int>();
         int counter = 0;
 
+        // Ensure there are the exact number of pieces to make matches
+        // 2 of each type
         for(int i = 0; i < totalPairs; ++i)
         {
             nums.Add(i);
@@ -206,6 +221,7 @@ public class GameBoard : Singleton<GameBoard>
         yield return new WaitForSeconds(1);
         Vector2 startingPosition = new Vector2(((boardWidth * 128) / 2) * -1, ((boardHeight * 128) / 2) * -1);
 
+        // Layout the board pieces
         for(int x = 0; x < boardWidth; ++x)
         {
             for(int y = 0; y < boardHeight; ++y)
@@ -272,6 +288,7 @@ public class GameBoard : Singleton<GameBoard>
         piece.Deactivate();
     }
 
+    // Pre populate the pool
     private void SetupPool ()
     {
         _piecePool = new List<GamePiece>();
@@ -287,6 +304,7 @@ public class GameBoard : Singleton<GameBoard>
 
     #region Utility
 
+    // Randomizes a list
     public static void Shuffle<T>(List<T> list)
     {
         int n = list.Count;

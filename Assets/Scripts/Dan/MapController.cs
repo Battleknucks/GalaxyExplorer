@@ -18,12 +18,14 @@ public class MapController : MonoBehaviour
         _thisTransform = GetComponent<RectTransform>();
     }
 
+    // Show the map
     public void Init()
     {
         gameObject.SetActive(true);
         Invoke("Commence", 1.0F);
     }
 
+    // Put the map away
     public void Kill ()
     {
         StopAllCoroutines();
@@ -37,6 +39,7 @@ public class MapController : MonoBehaviour
         StartCoroutine("DoMapRoutine");
     }
 
+    // Show the map images, fading between each one
     private IEnumerator DoMapRoutine()
     {
         yield return new WaitForEndOfFrame();
@@ -74,6 +77,8 @@ public class MapController : MonoBehaviour
             }
 
             yield return new WaitForSeconds(1);
+
+            // Move the map to the upper right of the screen and start informing the user what to do next
             MainUI.Instance.StartInstructions();
             timer = 0.0F;
 

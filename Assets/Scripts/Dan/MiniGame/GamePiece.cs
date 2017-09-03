@@ -59,11 +59,13 @@ public class GamePiece : GazeSelectionTarget
         _hiddenPiece.enabled = false;
     }
 
+    // Set the ID that corresponds to the image on this piece
     public void SetID (int newID)
     {
         _id = newID;
     }
 
+    // Set the sprite for this piece
     public void SetHiddenImage (Sprite sprite)
     {
         _hiddenPiece.sprite = sprite;
@@ -71,6 +73,7 @@ public class GamePiece : GazeSelectionTarget
 
     #region PieceInteraction
 
+    // Turn this piece on and move it onto the board
     public void Activate (Vector3 boardPosition)
     {
         _thisTransform.localScale = Vector3.one;
@@ -82,33 +85,39 @@ public class GamePiece : GazeSelectionTarget
         }
     }
 
+    // Turn this piece off
     public void Deactivate (bool instant = false)
     {
         gameObject.SetActive(false);
     }
 
+    // User has selected this piece
     public void SelectPiece ()
     {
         GameBoard.Instance.RevealPiece(this);
     }
 
+    // User/game has deselected this piece
     public void DeselectPiece (bool recycle = false)
     {
         _selected = false;
         GameBoard.Instance.ResetPiece(this, recycle);
     }
 
+    // Show the piece image to the user
     public void RevealPiece ()
     {
         StartCoroutine(SelectRoutine());
     }
 
+    // Hide the piece image from the user
     public void ObscurePiece ()
     {
         _hiddenPiece.enabled = false;
         DeselectPiece();
     }
 
+    // This piece was part of a successfull match, 'collect' it
     public IEnumerator CollectPiece ()
     {
         _isAnimating = true;
@@ -131,6 +140,7 @@ public class GamePiece : GazeSelectionTarget
 
     #region Animation
 
+    // Fly the piece onto it's spot on the board
     private IEnumerator MoveToBoardRoutine (Vector3 destination)
     {
         _isAnimating = true;
@@ -146,6 +156,7 @@ public class GamePiece : GazeSelectionTarget
         _isAnimating = false;
     }
 
+    // Show the piece image to the user, and animate graphic
     private IEnumerator SelectRoutine ()
     {
         _isAnimating = true;
@@ -173,6 +184,7 @@ public class GamePiece : GazeSelectionTarget
         _selected = true;
     }
 
+    // Hide the piece image from the user, animate the graphic
     private IEnumerator DeSelectRoutine()
     {
         _isAnimating = true;

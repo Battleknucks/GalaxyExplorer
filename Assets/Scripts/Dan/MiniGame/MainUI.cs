@@ -27,6 +27,7 @@ public class MainUI : Singleton<MainUI>
 
     private Transform _thisTransform;
     private Transform _canvasHolder;
+    // Random 'hacking' messages
     private List<string> _hackingMessages = new List<string>() { "IP Address detected - 172.168.250.64...", "Brute force attempted...", "Attempting to access usr/bin...", "IPSec interface comprimised...", "UDP Ports comprimised.." };
     private bool _isHacking;
     private float _hackDuration;
@@ -36,6 +37,7 @@ public class MainUI : Singleton<MainUI>
     private bool _earthMessageDisplayed;
     private bool _canvasInExploreMode;
 
+    // Custom data to pass to a coroutine, since they can only accept 1 parameter when invoked by name
     private class _messageData
     {
         public string Message;
@@ -98,6 +100,7 @@ public class MainUI : Singleton<MainUI>
         }
     }
 
+    // The user pressed the back button on the tool bar
     public void GoBack()
     {
         if(!_canvasInExploreMode)
@@ -107,11 +110,13 @@ public class MainUI : Singleton<MainUI>
         }
     }
 
+    // Used to debug on device
     public void Error(string message)
     {
         StartCoroutine("DisplayMessage", new _messageData(message));
     }
 
+    // Begin informing the user there is a cyber security threat
     public void DoIntro()
     {
         SetCanvasToExplorer();
@@ -119,6 +124,7 @@ public class MainUI : Singleton<MainUI>
         _introComplete = true;
     }
 
+    // Put the UI in mini game mode
     public void SetCanvasToMiniGame(Transform holder)
     {
         _canvas.transform.SetParent(holder);
@@ -131,6 +137,7 @@ public class MainUI : Singleton<MainUI>
         _mapController.Init();
     }
 
+    // Put the UI in 'explore' mode for navigating the galaxy
     public void SetCanvasToExplorer()
     {
         StopAllCoroutines();
@@ -148,16 +155,19 @@ public class MainUI : Singleton<MainUI>
         _mapController.Kill();
     }
 
+    // Inform the user we are locating the affected system
     public void StartLocating()
     {
         StartCoroutine("DisplayMessage", new _messageData("Locating targeted system..."));
     }
 
+    // Inform the user they must stop the hacker
     public void StartInstructions()
     {
         StartCoroutine("DisplayMessage", new _messageData("System located... Circadence Inc. is under attack! Stop the hacker!"));
     }
 
+    // Start the 'countdown' proccess of the 'hacker' getting into the system
     public void StartHacking(float duration)
     {
         if(_canvasInExploreMode)
@@ -171,6 +181,7 @@ public class MainUI : Singleton<MainUI>
         StartCoroutine("HackBar");
     }
 
+    // User has won the mini game
     public void Win ()
     {
         StopAllCoroutines();
@@ -179,6 +190,7 @@ public class MainUI : Singleton<MainUI>
         StartCoroutine("DisplayMessage", new _messageData("Congradulations, you successfully stopped the hacker."));
     }
 
+    // User has lost the mini game
     public void Loose ()
     {
         StopAllCoroutines();
@@ -187,6 +199,7 @@ public class MainUI : Singleton<MainUI>
         StartCoroutine("DisplayMessage", new _messageData("The hacker successfully breached the system. You have failed.."));
     }
 
+    // Display random messages about the hacker
     private IEnumerator HackRoutine()
     {
         while (_isHacking)
@@ -196,6 +209,7 @@ public class MainUI : Singleton<MainUI>
         }
     }
 
+    // Update the progress bar
     private IEnumerator HackBar()
     {
         _progressBarBackdrop.enabled = true;
@@ -208,9 +222,11 @@ public class MainUI : Singleton<MainUI>
             yield return null;
         }
 
+        // We have reached the end of the timer
         GameBoard.Instance.HackCompleted();
     }
 
+    // Displays a message in the UI marquee
     private IEnumerator DisplayMessage(_messageData data)
     {
         int i = 0;
