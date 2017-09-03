@@ -97,6 +97,7 @@ public class MainUI : Singleton<MainUI>
 
     public void DoIntro ()
     {
+        _canvas.worldCamera = Camera.main;
         StartCoroutine(DisplayMessage("There is a cyber attack in progress in the Sol System..."));
         _introComplete = true;
     }
