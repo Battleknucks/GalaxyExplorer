@@ -35,13 +35,13 @@ public class MapController : MonoBehaviour
             ToolManager.Instance.HideTools(true);
             MainUI.Instance.StartLocating();
             GameBoard.Instance.StartAudio();
-            _thisRawImage.material.SetTexture("_Texture1", DataDownloader.Instance.MapImages[0]);
+            _thisRawImage.material.SetTexture("_MainTex", DataDownloader.Instance.MapImages[0]);
             yield return new WaitForSeconds(0.5F);
             float timer = 0.0F;
 
             for (int i = 1; i < DataDownloader.Instance.MapImages.Count; ++i)
             {
-                _thisRawImage.material.SetTexture("_Texture1", DataDownloader.Instance.MapImages[i - 1]);
+                _thisRawImage.material.SetTexture("_MainTex", DataDownloader.Instance.MapImages[i - 1]);
                 _thisRawImage.material.SetTexture("_Texture2", DataDownloader.Instance.MapImages[i]);
                 timer = 0.0F;
 
