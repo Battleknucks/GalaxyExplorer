@@ -483,6 +483,17 @@ MonoBehaviour:
     type: 2}
   _uiHolder: {fileID: 63031008}
   _music: {fileID: 8300000, guid: 31a57b53933714143a06b4769ab98b3a, type: 3}
+  _hiddenPieceSprites:
+  - {fileID: 21300000, guid: 6c9edb9b7554d8a45af82baf53c04fdf, type: 3}
+  - {fileID: 21300000, guid: c7dfabbe848be0b48bca06988f7b808c, type: 3}
+  - {fileID: 21300000, guid: 7472921d9fbbaf641a0c75a8000d2c48, type: 3}
+  - {fileID: 21300000, guid: 96b0e00f3e11c4243bfdbe0a35371105, type: 3}
+  - {fileID: 21300000, guid: 45c35f737a8a9e84198fd7f60c03e3bd, type: 3}
+  - {fileID: 21300000, guid: 81b818cdef177b3479499e3a8de31181, type: 3}
+  - {fileID: 21300000, guid: de556e8788584f142bc49c8f640d0378, type: 3}
+  - {fileID: 21300000, guid: 99a37b6ba1be2364c8f5d41ff09c9235, type: 3}
+  - {fileID: 21300000, guid: 946aa37bc9903f34cae97114d08a6696, type: 3}
+  - {fileID: 21300000, guid: fe79701aa54cb414da18c25b633faca2, type: 3}
 --- !u!82 &1753817052
 AudioSource:
   m_ObjectHideFlags: 0

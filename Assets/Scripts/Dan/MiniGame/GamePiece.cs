@@ -69,6 +69,11 @@ public class GamePiece : GazeSelectionTarget
         _id = newID;
     }
 
+    public void SetHiddenImage (Sprite sprite)
+    {
+        _hiddenPiece.sprite = sprite;
+    }
+
     #region PieceInteraction
 
     public void Activate (Vector3 boardPosition)

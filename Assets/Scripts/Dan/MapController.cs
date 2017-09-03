@@ -31,6 +31,7 @@ public class MapController : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             MusicManager.Instance.KillBackgroundMusic();
+            ToolManager.Instance.HideTools(true);
             MainUI.Instance.StartLocating();
             GameBoard.Instance.StartAudio();
             _thisRawImage.material.SetTexture("_Texture1", DataDownloader.Instance.MapImages[0]);

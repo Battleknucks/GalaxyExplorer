@@ -18,6 +18,9 @@ public class GameBoard : Singleton<GameBoard>
     [SerializeField]
     private AudioClip _music;
 
+    [SerializeField]
+    private Sprite[] _hiddenPieceSprites;
+
     private AudioSource _thisAudioSource;
     private Transform _thisTransform;
     private Transform _boardHolder;
@@ -172,6 +175,7 @@ public class GameBoard : Singleton<GameBoard>
                 piece.CachedTransform.localEulerAngles = new Vector3(45, 0, 0);
                 piece.CachedTransform.localScale = Vector3.one;
                 piece.SetID(nums[counter]);
+                piece.SetHiddenImage(_hiddenPieceSprites[nums[counter]]);
                 ++counter;
                 _piecesOnBoard.Add(piece);
                 piece.Activate(position);
