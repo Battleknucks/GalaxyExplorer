@@ -78,6 +78,7 @@ public class GamePiece : GazeSelectionTarget
 
     public void Activate (Vector3 boardPosition)
     {
+        _thisTransform.localScale = Vector3.one;
         gameObject.SetActive(true);
 
         if (!_isAnimating)
@@ -114,10 +115,22 @@ public class GamePiece : GazeSelectionTarget
         DeselectPiece();
     }
 
-    public void ResetPiece ()
+    public IEnumerator CollectPiece ()
     {
+        _isAnimating = true;
         _hiddenPiece.enabled = false;
         _thisMaterial.SetFloat("_Pulse", 0.0F);
+        float i = 0.0F;
+
+        while (i < 1.0F)
+        {
+            yield return null;
+            i += Time.unscaledDeltaTime / _revealDuration;
+            _thisTransform.localScale = Vector3.Lerp(_thisTransform.localScale, Vector3.zero, i);
+        }
+
+        yield return new WaitForEndOfFrame();
+        _isAnimating = false;
         DeselectPiece(true);
     }
 
@@ -143,6 +156,7 @@ public class GamePiece : GazeSelectionTarget
     private IEnumerator SelectRoutine ()
     {
         _isAnimating = true;
+        yield return new WaitForEndOfFrame();
         float i = 0.0F;
 
         while (i < 1.0F)

@@ -86,7 +86,7 @@ public class GameBoard : Singleton<GameBoard>
         {
             while (_revealedPieces.Count > 0)
             {
-                _revealedPieces[0].ResetPiece();
+                yield return StartCoroutine(_revealedPieces[0].CollectPiece());
             }
 
             yield return new WaitForSeconds(1);
