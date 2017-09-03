@@ -146,6 +146,7 @@ public class ViewLoader : Singleton<ViewLoader>
     public bool GoBack()
     {
         bool didGoBack = false;
+        MainUI.Instance.GoBack();
 
         if (viewBackStack.Count > 0 && !TransitionManager.Instance.InTransition)
         {

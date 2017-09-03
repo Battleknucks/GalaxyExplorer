@@ -2,8 +2,8 @@
 {
 	Properties
 	{
-		_MainTex("Texture 1", 2D) = "white" {}
-		_Texture2("Texture 1", 2D) = "white" {}
+		_Texture1("Texture 1", 2D) = "white" {}
+		_Texture2("Texture 2", 2D) = "white" {}
 		_Fade("Fade", float) = 0.0
 	}
 
@@ -23,7 +23,7 @@
 
 			#include "UnityCG.cginc"
 
-			uniform sampler2D _MainTex;
+			uniform sampler2D _Texture1;
 			uniform sampler2D _Texture2;
 			uniform fixed _Fade;
 
@@ -50,7 +50,7 @@
 			
 			fixed4 frag (fragmentInput input) : COLOR
 			{
-				fixed4 col1 = tex2D(_MainTex, input.uv);
+				fixed4 col1 = tex2D(_Texture1, input.uv);
 				fixed4 col2 = tex2D(_Texture2, input.uv);
 
 				return lerp(col1, col2, _Fade);

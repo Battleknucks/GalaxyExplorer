@@ -40,8 +40,7 @@ public class GameBoard : Singleton<GameBoard>
         _thisAudioSource = GetComponent<AudioSource>();
         _runningMatch = false;
         SetupPool();
-        MainUI.Instance.CanvasTransform.SetParent(_uiHolder);
-        MainUI.Instance.SetupCanvas();
+        MainUI.Instance.SetCanvasToMiniGame(_uiHolder);
     }
 
     #region Game
@@ -64,6 +63,16 @@ public class GameBoard : Singleton<GameBoard>
         yield return StartCoroutine(SetupBoard());
         yield return StartCoroutine(RevealAllPieces());
         MainUI.Instance.StartHacking(_currentBoardDuration);
+    }
+
+    public void CleanupGame()
+    {
+        for(int i = 0; i < _piecesOnBoard.Count; ++i)
+        {
+            ReturnPieceToPool(_piecesOnBoard[i]);
+        }
+
+        _piecesOnBoard.Clear();
     }
 
     private IEnumerator CheckForMatchRoutine ()
@@ -122,6 +131,11 @@ public class GameBoard : Singleton<GameBoard>
 
         if(recycle)
         {
+            if(_piecesOnBoard.Contains(pieceToRemove))
+            {
+                _piecesOnBoard.Remove(pieceToRemove);
+            }
+
             ReturnPieceToPool(pieceToRemove);
         }
     }

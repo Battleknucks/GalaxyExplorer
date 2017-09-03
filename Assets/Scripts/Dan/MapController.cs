@@ -9,16 +9,35 @@ using System.Collections;
 public class MapController : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform _mainTransform;
+    private RawImage _mapRawImage;
 
-    private RawImage _thisRawImage;
+    private RectTransform _thisTransform;
 
     private void Awake()
     {
-        _thisRawImage = GetComponent<RawImage>();
+        _thisTransform = GetComponent<RectTransform>();
     }
 
-    private IEnumerator Start()
+    public void Init()
+    {
+        gameObject.SetActive(true);
+        Invoke("Commence", 1.0F);
+    }
+
+    public void Kill ()
+    {
+        StopAllCoroutines();
+        _thisTransform.localPosition = Vector3.zero;
+        _thisTransform.sizeDelta = new Vector2(512, 512);
+        gameObject.SetActive(false);
+    }
+
+    private void Commence ()
+    {
+        StartCoroutine("DoMapRoutine");
+    }
+
+    private IEnumerator DoMapRoutine()
     {
         yield return new WaitForEndOfFrame();
 
@@ -36,20 +55,20 @@ public class MapController : MonoBehaviour
             ToolManager.Instance.HideTools(true);
             MainUI.Instance.StartLocating();
             GameBoard.Instance.StartAudio();
-            _thisRawImage.material.SetTexture("_MainTex", DataDownloader.Instance.MapImages[0]);
+            _mapRawImage.material.SetTexture("_Texture1", DataDownloader.Instance.MapImages[0]);
             yield return new WaitForSeconds(0.5F);
             float timer = 0.0F;
 
             for (int i = 1; i < DataDownloader.Instance.MapImages.Count; ++i)
             {
-                _thisRawImage.material.SetTexture("_MainTex", DataDownloader.Instance.MapImages[i - 1]);
-                _thisRawImage.material.SetTexture("_Texture2", DataDownloader.Instance.MapImages[i]);
+                _mapRawImage.material.SetTexture("_Texture1", DataDownloader.Instance.MapImages[i - 1]);
+                _mapRawImage.material.SetTexture("_Texture2", DataDownloader.Instance.MapImages[i]);
                 timer = 0.0F;
 
                 while (timer < 1.0F)
                 {
                     timer += Time.unscaledDeltaTime / 0.5F;
-                    _thisRawImage.material.SetFloat("_Fade", timer);
+                    _mapRawImage.material.SetFloat("_Fade", timer);
                     yield return null;
                 }
             }
@@ -62,8 +81,8 @@ public class MapController : MonoBehaviour
             {
                 timer += Time.unscaledDeltaTime;
                 yield return null;
-                _mainTransform.anchoredPosition = Vector2.Lerp(_mainTransform.anchoredPosition, new Vector2(384, 320), timer);
-                _mainTransform.sizeDelta = Vector2.Lerp(_mainTransform.sizeDelta, new Vector2(128, 128), timer);
+                _thisTransform.anchoredPosition = Vector2.Lerp(_thisTransform.anchoredPosition, new Vector2(384, 320), timer);
+                _thisTransform.sizeDelta = Vector2.Lerp(_thisTransform.sizeDelta, new Vector2(128, 128), timer);
             }
 
             yield return new WaitForEndOfFrame();
