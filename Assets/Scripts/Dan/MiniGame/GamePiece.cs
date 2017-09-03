@@ -42,7 +42,6 @@ public class GamePiece : GazeSelectionTarget
     }
 
     private Transform _thisTransform;
-    private Material _thisMaterial;
     private bool _inUse;
     private bool _selected;
     private bool _inGaze;
@@ -54,10 +53,6 @@ public class GamePiece : GazeSelectionTarget
     private void Awake()
     {
         _thisTransform = GetComponent<Transform>();
-        RawImage ri = GetComponent<RawImage>();
-        _thisMaterial = new Material(Shader.Find("Dan W./GamePiece"));
-        _thisMaterial.CopyPropertiesFromMaterial(ri.material);
-        ri.material = _thisMaterial;
         _selected = false;
         _inGaze = false;
         _isAnimating = false;
@@ -111,7 +106,6 @@ public class GamePiece : GazeSelectionTarget
     public void ObscurePiece ()
     {
         _hiddenPiece.enabled = false;
-        _thisMaterial.SetFloat("_Pulse", 0.0F);
         DeselectPiece();
     }
 
@@ -119,7 +113,6 @@ public class GamePiece : GazeSelectionTarget
     {
         _isAnimating = true;
         _hiddenPiece.enabled = false;
-        _thisMaterial.SetFloat("_Pulse", 0.0F);
         float i = 0.0F;
 
         while (i < 1.0F)
@@ -168,7 +161,6 @@ public class GamePiece : GazeSelectionTarget
 
         i = 0.0F;
         _hiddenPiece.enabled = true;
-        _thisMaterial.SetFloat("_Pulse", 1.0F);
 
         while (i < 1.0F)
         {

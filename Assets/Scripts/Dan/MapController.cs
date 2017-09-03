@@ -8,12 +8,13 @@ using System.Collections;
 
 public class MapController : MonoBehaviour
 {
-    private RectTransform _thisTransform;
+    [SerializeField]
+    private RectTransform _mainTransform;
+
     private RawImage _thisRawImage;
 
     private void Awake()
     {
-        _thisTransform = GetComponent<RectTransform>();
         _thisRawImage = GetComponent<RawImage>();
     }
 
@@ -61,8 +62,8 @@ public class MapController : MonoBehaviour
             {
                 timer += Time.unscaledDeltaTime;
                 yield return null;
-                _thisTransform.anchoredPosition = Vector2.Lerp(_thisTransform.anchoredPosition, new Vector2(384, 320), timer);
-                _thisTransform.sizeDelta = Vector2.Lerp(_thisTransform.sizeDelta, new Vector2(128, 128), timer);
+                _mainTransform.anchoredPosition = Vector2.Lerp(_mainTransform.anchoredPosition, new Vector2(384, 320), timer);
+                _mainTransform.sizeDelta = Vector2.Lerp(_mainTransform.sizeDelta, new Vector2(128, 128), timer);
             }
 
             yield return new WaitForEndOfFrame();
