@@ -71,6 +71,8 @@ public class GameBoard : Singleton<GameBoard>
     // Cleanup the board and it's pieces
     public void CleanupGame()
     {
+        StopAllCoroutines();
+
         for(int i = 0; i < _piecesOnBoard.Count; ++i)
         {
             ReturnPieceToPool(_piecesOnBoard[i]);
@@ -117,6 +119,7 @@ public class GameBoard : Singleton<GameBoard>
         }
 
         _revealedPieces.Clear();
+        yield return new WaitForEndOfFrame();
 
         // There are no more pieces on the board
         if(_piecesOnBoard.Count < 1)
@@ -158,7 +161,7 @@ public class GameBoard : Singleton<GameBoard>
 
         if (_revealedPieces.Count == 2)
         {
-            StartCoroutine(CheckForMatchRoutine());
+            StartCoroutine("CheckForMatchRoutine");
         }
     }
 
