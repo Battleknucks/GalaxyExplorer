@@ -25,6 +25,9 @@ public class MainUI : Singleton<MainUI>
     [SerializeField]
     private Image _progressBarFill;
 
+    [SerializeField]
+    private GameObject _robotObj;
+
     private Transform _thisTransform;
     private Transform _canvasHolder;
     // Random 'hacking' messages
@@ -36,6 +39,7 @@ public class MainUI : Singleton<MainUI>
     private bool _solarMessageDisplayed;
     private bool _earthMessageDisplayed;
     private bool _canvasInExploreMode;
+    private Animator _robotAnimator;
 
     // Custom data to pass to a coroutine, since they can only accept 1 parameter when invoked by name
     private class _messageData
@@ -53,6 +57,7 @@ public class MainUI : Singleton<MainUI>
     private void Awake()
     {
         _thisTransform = GetComponent<Transform>();
+        _robotAnimator = _robotObj.GetComponent<Animator>();
         _canvasHolder = _canvas.transform.parent;
         _mainMessage.text = string.Empty;
         _isHacking = false;
@@ -189,6 +194,7 @@ public class MainUI : Singleton<MainUI>
     public void Win ()
     {
         StopAllCoroutines();
+        _robotObj.SetActive(true);
         _progressBarBackdrop.enabled = false;
         _progressBarFill.enabled = false;
         StartCoroutine("DisplayMessage", new _messageData("Congradulations, you successfully stopped the hacker."));
@@ -198,6 +204,7 @@ public class MainUI : Singleton<MainUI>
     public void Loose ()
     {
         StopAllCoroutines();
+        _robotObj.SetActive(true);
         _progressBarBackdrop.enabled = false;
         _progressBarFill.enabled = false;
         StartCoroutine("DisplayMessage", new _messageData("The hacker successfully breached the system. You have failed.."));
@@ -216,6 +223,7 @@ public class MainUI : Singleton<MainUI>
     // Update the progress bar
     private IEnumerator HackBar()
     {
+        _robotObj.SetActive(false);
         _progressBarBackdrop.enabled = true;
         _progressBarFill.fillAmount = 0.0F;
         _progressBarFill.enabled = true;
@@ -240,6 +248,8 @@ public class MainUI : Singleton<MainUI>
         {
             yield return new WaitForSeconds(2.5F);
         }
+
+        _robotAnimator.SetTrigger("Talk");
 
         while (i < data.Message.Length)
         {
