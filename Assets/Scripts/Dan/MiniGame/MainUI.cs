@@ -60,10 +60,14 @@ public class MainUI : Singleton<MainUI>
         _introComplete = false;
         _solarMessageDisplayed = false;
         _earthMessageDisplayed = false;
-        _mapController.Kill();
         _progressBarBackdrop.enabled = false;
         _progressBarFill.enabled = false;
         _canvasInExploreMode = false;
+    }
+
+    private void Start()
+    {
+        _mapController.Kill();
     }
 
     private void Update()
